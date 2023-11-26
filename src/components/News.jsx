@@ -19,20 +19,18 @@ const News = () =>{
  },[])
 
  useEffect(() =>{
-console.log(carousel); 
+
  },[carousel])
 
  useEffect(() =>{
     moveCarousel(); 
  },[carousel])
-   console.log(inView); 
+   
    
    function moveCarousel(){
-  setTimeout(() =>{
-    console.log('in view');    
+  setTimeout(() =>{    
     let carouselCopy = [...carousel]; 
        let index = carouselCopy.indexOf('first'); 
-       console.log(carouselCopy.length); 
      
        
        let rotate = index === carouselCopy.length - 1 ? 0 : index + 1; 
@@ -81,7 +79,6 @@ console.log(carousel);
             ))}
         </div>
         </section>
-        <div style={{width:'100%', height:'100vh'}}></div>
         </>
     )
 }

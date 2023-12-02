@@ -142,7 +142,7 @@ const Showcase = () =>{
                         <h1><span className="R"><h1>R</h1></span>etrospective</h1>
                         <div className="header-options">
                          <p><span>360 <div id="degree"></div></span>  Survey Platform</p>
-                         <div className="analytics-btn"><button onClick={() => revealTab()}>{tab ? 'Analytics' : 'Hide Analytics'}</button></div>
+                         <div className="analytics-btn"><button onClick={() => revealTab()}>{tab ? 'Dashboard' : 'Hide Dashboard'}</button></div>
                         </div>
                     
                     </div>

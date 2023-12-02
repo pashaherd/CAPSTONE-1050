@@ -19,7 +19,7 @@ const News = () =>{
  },[])
 
  useEffect(() =>{
-
+   console.log(carousel); 
  },[carousel])
 
  useEffect(() =>{
@@ -36,7 +36,7 @@ const News = () =>{
        let rotate = index === carouselCopy.length - 1 ? 0 : index + 1; 
        carouselCopy[rotate] = 'first'; 
        carouselCopy[index] = 'queued'; 
-    setCarousel(carouselCopy); 
+    setCarousel(() => carouselCopy); 
    },5000)   
    }
  

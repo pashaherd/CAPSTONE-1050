@@ -1,7 +1,121 @@
 import React from 'react'
+import {useState, useEffect} from 'react'; 
+import eye from '../assets/eye.png'; 
 
 const Nav = () =>{
+    const [type, setType] = useState('password');
+    const [displayLogin, setDisplayLogin] = useState('grid'); 
+    const [displaySignUp, setDisplaySignUp] = useState('none')
+    
+    useEffect(() =>{
+
+        const handleClick = (e) =>{
+            const loginDiv = document.querySelector('.login-wrap'); 
+
+            if(e.target.className === loginDiv.className){
+                loginDiv.classList.add('hidden'); 
+                 loginDiv.style.zIndex = -1;    
+    
+            }
+             console.log(e.target); 
+        }
+       window.addEventListener('click', handleClick)
+
+       return () =>{
+        window.removeEventListener('click', handleClick)
+       }
+    },[])
+    function handlePasswordReveal(){      
+        const input = document.querySelector('.password-reveal img'); 
+        input.classList.toggle('clicked'); 
+        if(type === 'password'){
+            setType('text')
+        } else {
+            setType('password'); 
+        }
+    }
+
+    function handleRevealLogin(){
+        const loginDiv = document.querySelector('.login-wrap'); 
+
+        loginDiv.classList.remove('hidden'); 
+        loginDiv.style.zIndex = 100; 
+    }
+
+    function handleSwitch(method){
+        const loginWrap = document.querySelector('.login-signup'); 
+        const loginDiv = document.querySelector('.login'); 
+        const signUpDiv = document.querySelector('.sign-up'); 
+        if(method === 'toSign'){
+            loginWrap.classList.add('sign'); 
+            loginDiv.classList.add('hidden'); 
+            setTimeout(() =>{
+              setDisplayLogin('none')
+            },1000)
+            setDisplaySignUp('block')
+            signUpDiv.classList.add('on'); 
+        }
+
+        if(method === 'toLogin'){
+            signUpDiv.classList.remove('on')
+            loginWrap.classList.remove('sign');
+            
+            setTimeout(() =>{
+                setDisplaySignUp('none')
+            },500)
+            setDisplayLogin('grid');
+            loginDiv.classList.remove('hidden'); 
+        }
+    }
     return (
+        <>
+        <div className="login-wrap hidden">
+            <div className="login-signup">
+                <div className="login" style={{display:displayLogin}}>
+                <span className="login-header">
+                <h1>Login</h1>
+                <p>Dont Have An Account? Sign Up <button onClick={() => handleSwitch('toSign')}>Here</button></p>
+                </span>
+                <div className="input-wrap">
+                    <span>
+                        <label>Username or Employee ID</label>
+                        <input type="text" placeholder="Enter" id="username-login" name="username" />
+                    </span>
+                    <span>
+                        <label>Password</label>
+                        <div className="password-reveal">
+                            <input type={type} placeholder="Enter" id="password-login" name="password" /> 
+                            <img src={eye} alt="" id="eye-reveal" onClick={() => handlePasswordReveal()}/>
+                        </div>
+                    </span>
+                </div>
+                <div className="submit-btn-login"><button>Enter</button></div>
+            </div>
+            <div className="sign-up" style={{display:displaySignUp}}>
+                <span>
+                <h1>Sign Up</h1>
+                <p>Already Have An Account? Login <button onClick={() => handleSwitch('toLogin')}>Here</button></p>
+                </span>
+                <div className="inputs-sign">
+                    <span>
+                        <label>Employee ID</label>
+                        <input type="text" placeholder="Enter" name="employeeID" id="employeeID"/>
+                    </span>
+                    <span>
+                        <label>Password</label>
+                        <input type="password" placeholder="Enter" name="password" id="password-sign"/>
+                    </span>
+                    <span>
+                        <label>Confirm Password</label>
+                        <input type="password" placeholder="Enter" name="confirm" id="confirm-password"/>
+                    </span>
+                    <span>
+                        <textarea placeholder="What Do You Plan To Achieve On This Platform?"></textarea>
+                    </span>
+                </div>
+            </div>
+            </div>
+        </div>
        <nav>
         <header>
         <div></div>
@@ -9,11 +123,12 @@ const Nav = () =>{
             <p>logo</p>
         </div>
         <ul>
-            <li><a href="#">Employee Login</a></li>
+            <li><button onClick={() => handleRevealLogin()}>Employee Login</button></li>
         </ul>
         </header>
         <div className="nav-footer"></div> 
        </nav>
+       </>
     )
 }
 

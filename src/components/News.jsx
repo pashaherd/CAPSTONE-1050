@@ -4,23 +4,21 @@ import { useInView } from 'react-intersection-observer'
 import completed from '../assets/completed-task.png'
 import target from '../assets/target-a.png'
 
-const News = () =>{
-    const [news,setNews] = useState([{caption:'I Love Kobe Bryant', author:
-'His Greatest Fan', text:'I Love Kobe Because he is Kobe'},{caption:'I Love Martha Stewart', author:
-'Her Biggest Fan', text:'I Love Martha Stewart Because She is Martha Stewart'}, {caption:'I Love Shaquelle O\'Neal', author:'His Biggest Fan', text:'I Love Shaquelle Because He is Shaquelle'}]);
+const News = ({loadData, loadDataReady}) =>{
+    const [news,setNews] = useState(loadData?.stories ?? []);
    const [carousel, setCarousel] = useState([])
     const [ref,inView] = useInView(); 
-
+ 
+    useEffect(() =>{
+        console.log(loadData); 
+       setNews(loadData?.stories ?? []);
+    },[loadDataReady])
  useEffect(() => {
   let carousel = new Array(news.length).fill('queued'); 
   carousel[0] = 'first'; 
 
   setCarousel(carousel); 
  },[])
-
- useEffect(() =>{
-   console.log(carousel); 
- },[carousel])
 
  useEffect(() =>{
     moveCarousel(); 
@@ -39,44 +37,30 @@ const News = () =>{
     setCarousel(() => carouselCopy); 
    },5000)   
    }
- 
+    
 
     return (
         <>
-        <div className="analytics">
-            <div>
-                <img src={completed} alt="" className="analytic-icon"/>
-                <span>
-                    <p>Completed Surveys</p>
-                    <h3>100</h3>
-                </span>
-            </div>
-            <div>
-                <img src={target} alt="" className="analytic-icon"/>
-                <span>
-                    <p>Assigned Target</p>
-                    <h3>100</h3>
-                </span>
-            </div>
-        </div>
         <section className="news-section">
         <div className="news-header">
         <h1>Keep Up To Date ⚡</h1>
         </div>
         <div className="news-cards">
-    {news.map((segment,i) =>(
+    {news.length ? news.map((segment,i) =>(
    <div className={`card-wrap ${carousel[i]}`} key={i} ref={ref} >
    <span className="author-card">
-       <p>{segment.caption}</p>
-       <h3>{`- ${segment.author}`}</h3>
+       <p>{segment?.caption}</p>
+       <h3>{`- ${segment?.author}`}</h3>
    </span>
    <div className="news-card">
        <div>
-       <p>{segment.text}</p>
+       <p>{segment?.content}</p>
       </div>
    </div>
    </div>
-            ))}
+            )) : <div className="no-news">
+                <h1>No News Yet 🗞️</h1>
+                </div>}
         </div>
         </section>
         </>

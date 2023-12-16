@@ -32,7 +32,11 @@ const Showcase = () =>{
     },[])
 
     function revealTab(){
-        const div = document.querySelector('.analytics'); 
+        const main = document.querySelector('main'); 
+        const currentDash = main.children[1]; 
+        
+        const div = currentDash.className.match(/^default-dash/) ? 
+        document.querySelector('.default-dash')  : document.querySelector('.dashboard-wrap'); 
         div.classList.toggle('active'); 
 
         setTab(!tab); 
@@ -141,7 +145,7 @@ const Showcase = () =>{
                     <div className="showcase-header">
                         <h1><span className="R"><h1>R</h1></span>etrospective</h1>
                         <div className="header-options">
-                         <p><span>360 <div id="degree"></div></span>  Survey Platform</p>
+                         <div className="degree-ho"><span><p>360</p> <div id="degree"></div></span>  <p>Survey Platform</p></div>
                          <div className="analytics-btn"><button onClick={() => revealTab()}>{tab ? 'Dashboard' : 'Hide Dashboard'}</button></div>
                         </div>
                     

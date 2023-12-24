@@ -98,7 +98,7 @@ export default function Completion(){
 
          toast.success(res.msg, {position:'top-center', autoClose:3000}); 
          setTimeout(() =>{
-         window.location = '/'
+         window.location = '/capstone'
          },3000)  
         }catch(e){
             toast.error(e.message, {position:'top-center', autoClose:3000})

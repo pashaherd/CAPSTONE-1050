@@ -91,6 +91,7 @@ export default function Home(){
 
  async function handleSubmitPost(payload){
    const token = localStorage.getItem('token'); 
+   const user = localStorage.getItem('id'); 
 
    try{
      const req = await fetch('/update/posts', {
@@ -99,7 +100,7 @@ export default function Home(){
          'Content-Type':'application/json',
          'Authorization': `Bearer ${token}`
       },
-      body:JSON.stringify(payload)
+      body:JSON.stringify({...payload,user})
      }); 
      const res = await req.json();  
      if(res.expired){
@@ -120,6 +121,7 @@ export default function Home(){
  // Upload Notification
  async function handleNotificationData(payload){
    const token = localStorage.getItem('token'); 
+   const user = localStorage.getItem('id'); 
    try{
      const req = await fetch('/upload/notification', {
       method:'POST',
@@ -127,7 +129,7 @@ export default function Home(){
          'Content-Type':'application/json',
          'Authorization':`Bearer ${token}`
       },
-      body:JSON.stringify(payload)
+      body:JSON.stringify({...payload,user_id:user})
     }); 
     const res = await req.json(); 
     if(res.expired){
@@ -188,6 +190,8 @@ export default function Home(){
      if(!res.ok){
       throw new Error(res.msg); 
      }
+     
+     localStorage.setItem('id',res.employee.employee_id); 
 
      setInitialData(res);
      setTimeout(() => {
@@ -243,9 +247,24 @@ async function submitData(endpoint,payload){
 
 // Handle Campaign Search 
 
+  // Block dupes 
+
+  function checkPool(pool,result,isEmployee){
+   let s = isEmployee ? "first_name": "survey_title";
+
+      for(let i = 0; i < pool.length; i++){
+         if(pool[i][s] === result){
+            return false
+         }
+      }
+      return true
+  }
+
 async function handleSearch(e,route,setFunction,pool){
    const value = e.target.value;
-   const token = localStorage.getItem('token');  
+   const token = localStorage.getItem('token'); 
+   
+   if(value){
 
    try{
      const req = await fetch(route,{
@@ -261,8 +280,12 @@ async function handleSearch(e,route,setFunction,pool){
      if(!res.ok){
       throw new Error(res.msg); 
      }
-     
+     console.log('Search Res'); 
      console.log(res); 
+     const changeResult = route.match(/\/employee$/); 
+     const result = changeResult ? res.data.first_name : res.data.survey_title; 
+
+     const notDupe = checkPool(pool,result, changeResult); 
      if(res.data.length){
      setFunction([...pool, ...res.data])
      }
@@ -271,11 +294,13 @@ async function handleSearch(e,route,setFunction,pool){
       toast.error(e.message,{position:'top-center', autoClose:1000})
    }
 }
+}
 
 // Submit Campaign Data
 
 async function handleCampaignDataSubmit(e,payload){
    const token = localStorage.getItem('token');
+   
 
    try{
     const req = await fetch('/campaign/submit', {
@@ -355,17 +380,102 @@ async function handleSurveyTemplateSubmit(e,set1,set2){
        toast.error(e.message, {position:'top-center', autoClose:3000})
    }
 }
+
+// Create Team
+
+async function handleTeamCreation(e,set1,set2){
+   const token = localStorage.getItem('token'); 
+
+   try{
+    const req = await fetch('/team/create', {
+      method:'POST',
+      headers:{
+         'Content-Type':'application/json',
+         'Authorization':`Bearer ${token}`
+      }, 
+      body:JSON.stringify({name:{...set1}, data:{...set2}})
+    }); 
+
+    const res = await req.json(); 
+    if(!res.ok){
+      throw new Error(res.msg);
+    }
+
+    toast.success(res.msg,{position:'top-center', autoClose:3000}); 
+
+   } catch(e){
+      console.log(e); 
+      toast.error(e.message, {position:'top-center', autoClose:3000}); 
+   }
+}
+
+// Admin Settings
+async function handlePromotion(e){
+   const token = localStorage.getItem('token'); 
+   const user = localStorage.getItem('id');
+   
+   console.log('in')
+   const target = e.target.parentNode.previousSibling.firstChild.innerHTML; 
+   
+   try{
+      const req = await fetch('/permissions/promote', {
+         method:'PATCH',
+         headers:{
+            'Authorization':`Bearer ${token}`,
+            'Content-Type':'application/json'
+         },
+         body:JSON.stringify({user,target})
+      }); 
+
+      const res = await req.json(); 
+
+      if(!res.ok){
+         throw new Error(res.msg)
+      }
+      toast.success(res.msg, {position:'top-center',autoClose:3000}); 
+   }catch(e){
+      console.log(e); 
+      toast.error(e.message,{position:'top-center', autoClose:3000})
+   }
+}
+async function handleDemotion(e){
+   const token = localStorage.getItem('token');
+   const user = localStorage.getItem('id'); 
+   const target = e.target.parentNode.previousSibling.firstChild.innerHTML; 
+   
+
+   try{
+      const req = await fetch('/permissions/demote', {
+         method:'PATCH',
+         headers:{
+            'Authorization':`Bearer ${token}`,
+            'Content-Type':'application/json'
+         },
+         body:JSON.stringify({user,target})
+      }); 
+
+      const res = await req.json(); 
+
+      if(!res.ok){
+         throw new Error(res.msg)
+      }
+      toast.success(res.msg, {position:'top-center',autoClose:3000}); 
+   }catch(e){
+      console.log(e); 
+      toast.error(e.message,{position:'top-center', autoClose:3000})
+   }
+}
      return (
         <>
          <Nav submitData={submitData}/>
          <main>
          <Showcase/>
          <ErrorBoundary></ErrorBoundary>
-         { isLoggedIn ? <Dash data={initialData} handleSurveyTemplateSubmit={handleSurveyTemplateSubmit} handleSurveyBuildSubmit={handleSurveyBuildSubmit} handleSearch={handleSearch} handleCampaignDataSubmit={handleCampaignDataSubmit} handleGoalSubmit={handleGoalSubmit} sessionExpired={sessionExpired} handleNotificationData={handleNotificationData}handleSubmitPost={handleSubmitPost}/> : <Default className={'default-dash active'}/>}
+         { isLoggedIn ? <Dash data={initialData}  handlePromotion={handlePromotion} handleDemotion={handleDemotion} handleTeamCreation={handleTeamCreation} handleSurveyTemplateSubmit={handleSurveyTemplateSubmit} handleSurveyBuildSubmit={handleSurveyBuildSubmit} handleSearch={handleSearch} handleCampaignDataSubmit={handleCampaignDataSubmit} handleGoalSubmit={handleGoalSubmit} sessionExpired={sessionExpired} handleNotificationData={handleNotificationData}handleSubmitPost={handleSubmitPost}/> : <Default className={'default-dash active'}/>}
           <News loadData={loadData} loadDataReady={loadDataReady}/> 
          <Info/>
          <Feed loadData={loadData} loadDataReady={loadDataReady} sessionExpired={sessionExpired}/>
-         <Surveys isLoggedIn={isLoggedIn}loadData={loadData} sessionExpired={sessionExpired}/>
+         <Surveys initialData={initialData} isLoggedIn={isLoggedIn}loadData={loadData} sessionExpired={sessionExpired}/>
          <Footer/>
          </main>
          <ToastContainer/>

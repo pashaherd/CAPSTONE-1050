@@ -37,69 +37,10 @@ const News = ({loadData, loadDataReady}) =>{
     setCarousel(() => carouselCopy); 
    },5000)   
    }
-<<<<<<< HEAD
     
 
     return (
         <>
-=======
-
-// const userrole = "admin";
-const userrole = "user";
-
-    return (
-        <>
-        <div className="analytics">
-        {userrole === "admin" ? (
-          <>
-            <div>
-              <img src={completed} alt="" className="analytic-icon" />
-              <span>
-                <p>Completed Surveys</p>
-                <h3>100</h3>
-              </span>
-            </div>
- 
-            <div>
-              <img src={target} alt="" className="analytic-icon" />
-              <span>
-                <p>Assigned Target</p>
-                <h3>100</h3>
-              </span>
-            </div>
-          </>
-        ) : (
-          <>
-            <div>
-              <img src={target} alt="" className="analytic-icon" />
-              <span>
-                <p>User</p>
-                <h3>Salome Abarca</h3>
-              </span>
-            </div>
-
-            <div>
-              <img src={target} alt="" className="analytic-icon" />
-              <span>
-                <p>Email</p>
-                <h3>salome.abarca@xyz.ca</h3>
-              </span>
-            </div>
-
-            <div>
-              <img src={target} alt="" className="analytic-icon" />
-              <span>
-                <p>Phone</p>
-                <h3>555-666-7777</h3>
-              </span>
-            </div>
-          </>
-        )}
-        </div>
-
-
-
->>>>>>> origin/master
         <section className="news-section">
         <div className="news-header">
         <h1>Keep Up To Date ⚡</h1>

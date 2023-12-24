@@ -2,6 +2,7 @@ import React from 'react';
 import { useState , useEffect, useRef} from 'react'
 import {lazy,Suspense} from 'react'; 
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'; 
+import ErrorBoundary from './components/ErrorBoundary';
 
 
 const Home = lazy(() => import('./Home')); 
@@ -13,9 +14,9 @@ function App() {
   return (
     <Router>
      <Routes>
-       <Route exact path="/" element={<Home/>}/> 
-       <Route exact path="/about" element={<About/>}/>
-       <Route exact path="/survey/:id" element={<Completion />}/>
+       <Route exact path="/capstone" element={<Home/>}/> 
+       <Route exact path="/capstone/about" element={<About/>}/>
+       <Route exact path="/capstone/survey/:id" element={<Completion />}/>
       </Routes>     
     </Router>
   )

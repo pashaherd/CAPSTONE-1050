@@ -55,7 +55,7 @@ const Info = () =>{
           <div className="info">
               <div className="card-i" ref={ref} id="c1">
                 {cards[0] ? <div className="flipped">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur dolorum impedit earum expedita! Molestiae laboriosam, officiis dignissimos error esse facilis?</p>
+                <p>Being authentic is the art of staying true to oneself, embracing one's values, beliefs, and emotions.</p>
                     <div className="card-btn"><button onClick={(e) => handleFlip(e)}>Revert</button></div>
                 </div>: 
                 <>
@@ -70,7 +70,8 @@ const Info = () =>{
               </div>
               <div className="card-i" id="c2">
                 {cards[1] ? <div className="flipped">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur dolorum impedit earum expedita! Molestiae laboriosam, officiis dignissimos error esse facilis?</p>
+                <p>
+Being attentive is a crucial quality that involves the ability to focus one's mind and senses on a particular task, conversation, or situation.</p>
                     <div className="card-btn"><button onClick={(e) => handleFlip(e)}>Revert</button></div>
                 </div> :
                 <>
@@ -85,7 +86,8 @@ const Info = () =>{
               </div>
               <div className="card-i" id="c3">
                 { cards[2] ? <div className="flipped">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur dolorum impedit earum expedita! Molestiae laboriosam, officiis dignissimos error esse facilis?</p>
+                    <p>
+Being compassionate is a profound quality that involves a genuine concern for the well-being of others and a willingness to understand and alleviate their suffering.</p>
                     <div className="card-btn"><button onClick={(e) => handleFlip(e)}>Revert</button></div>
                 </div> :
               <>

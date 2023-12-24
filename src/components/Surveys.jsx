@@ -5,11 +5,18 @@ import info from '../assets/info.png'
 import arrow from '../assets/arrow.png'
 import stats from '../assets/bar-chart.png'; 
 
-const Surveys = ({loadData ,loadDataReady, isLoggedIn}) =>{
+const Surveys = ({loadData ,loadDataReady, isLoggedIn, initialData}) =>{
 const [surveysInProgress, setSurveysInProgress] = useState(loadData?.incompletedSurveys ?? []); 
 const navigate = useNavigate(); 
 const [surveys, setSurveys] = useState( loadData?.allInactiveSurveys ?? [])
-const [surveyCarousel, setSurveyCarousel] = useState(new Array(surveys.length).fill('off'))
+const [surveyCarousel, setSurveyCarousel] = useState(new Array(surveys.length).fill('off'));
+const [notifications, setNotifications] = useState(initialData?.notis ?? []); 
+
+// Set Notis
+
+useEffect(() =>{
+ setNotifications(initialData?.notis ?? []); 
+},[isLoggedIn]); 
 
 useEffect(() => {
      let carousel = [...surveyCarousel]; 
@@ -24,6 +31,7 @@ useEffect(() => {
      console.log('the')
 },[surveys])
 
+
 useEffect(() =>{
     const j = loadData?.allInactiveSurveys ? loadData.allInactiveSurveys.length : 0; 
         setSurveyCarousel(new Array(j).fill('off')) 
@@ -35,9 +43,8 @@ useEffect(() =>{
 },[loadData])
 
 useEffect(() =>{
-  console.log(surveyCarousel); 
-  console.log('up')
-},[surveyCarousel])
+  console.log(notifications); 
+},[notifications])
 
     function moveCarousel(method){
         let carousel = [...surveyCarousel]; 
@@ -82,14 +89,14 @@ useEffect(() =>{
 
     /// Handle Survey Start 
     function handleSurveyStart(e){
-        let target = e.target
-        
-        while(!target.className.match(/^cc/)){
-            target = target.parentNode; 
-        }
+        let target = e.target;
 
+        while(!target.className || !target.className.match(/^cc/)){
+            target = target.parentNode
+        }
+        
         const id = parseInt(target.id); 
-        navigate(`/survey/${surveys[id]["survey_ref"]}`)
+        navigate(`/capstone/survey/${surveys[id]["survey_ref"]}`)
     }
 
     function handleMiniSurveyStart(e){
@@ -99,7 +106,7 @@ useEffect(() =>{
         }
 
         let id = parseInt(target.id); 
-        navigate(`/surveys/${surveys[id]["survey_ref"]}`); 
+        navigate(`/capstone/survey/${surveys[id]["survey_ref"]}`); 
     }
     return (
         <section className="survey-wrap">
@@ -108,10 +115,16 @@ useEffect(() =>{
             <h1>Surveys 📜</h1>
             </div>
             <div className="header-notification">
+                {isLoggedIn ? notifications.map((noti,i) =>(
+                    <div className="noti" key={i} style={{animation:`noti ${1 * notifications.length}s infinite ease-in forwards`, animationDelay:`${i * 500}ms`}}>
+                        <p>{noti.notification}</p>
+                    </div>
+                )) :
                 <span>
                     <img src={info} alt="" className="header-icon"/>
                     <p>Looks Like Your Not Signed in, Sign In <a href="#">Here</a></p>
                 </span>
+                 }
             </div>
             </div>
             <div className="survey-body">
@@ -146,7 +159,7 @@ useEffect(() =>{
                                         <h2>{surveys[0]?.survey_title ?? 'null'}</h2>
                                         <p>{surveys[0]?.survey_desc ?? 'null'}</p>
                                     </span>
-                                    <div className="survey-start-btn"><button onClick={(e) => handleSurveyStart(e)}>Start</button></div>
+                                    <div className="survey-start-btn"><button onClick={(e) => handleMiniSurveyStart(e)}>Start</button></div>
                                     <div className="new-survey-stats">
                                         <div>
                                             <p>Completion Count</p>
@@ -157,12 +170,13 @@ useEffect(() =>{
                                         </div>
                                     </div>
                                  </div>
+                                 {surveys.length > 1 && 
                                  <div className='mini-s' id="1">
                                     <span className="survey-card-header">
                                         <h2>{surveys[1]?.survey_title ?? 'null'}</h2>
                                         <p>{surveys[1]?.survey_desc ?? 'null'}</p>
                                     </span>
-                                    <div className="survey-start-btn"><button onClick={(e) => handleSurveyStart(e)}>Start</button></div>
+                                    <div className="survey-start-btn"><button onClick={(e) => handleMiniSurveyStart(e)}>Start</button></div>
                                     <div className="new-survey-stats">
                                         <div>
                                             <p>Completion Count</p>
@@ -172,14 +186,14 @@ useEffect(() =>{
                                              </span>
                                         </div>
                                     </div>
-                                 </div>
+                                 </div>}
                             </div> : surveys.map((survey,i) =>(
                                  <div className={`cc ${surveyCarousel[i]}`} key={i} id={`${i}`}>
                                     <span className="survey-card-header">
                                         <h2>{survey?.survey_title ?? 'null'}</h2>
                                         <p>{survey?.survey_desc ?? 'null'}</p>
                                     </span>
-                                    <div className="survey-start-btn"><button onClick={(e) => handleSurveyStart(e)}>Start</button></div>
+                                    <div className="survey-start-btn"><button className="survey-start-btn-btn" onClick={(e) => handleSurveyStart(e)}>Start</button></div>
                                     <div className="new-survey-stats">
                                         <div>
                                             <p>Completion Count</p>

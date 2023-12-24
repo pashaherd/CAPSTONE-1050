@@ -13,7 +13,7 @@ import checkbox from '../assets/checkbox.png';
 import redx from '../assets/redx.png'; 
 
 
-const Dash = ({data,handleSurveyTemplateSubmit,handleSurveyBuildSubmit,handleSubmitPost, handleNotificationData, handleGoalSubmit, handleSearch, handleCampaignDataSubmit}) =>{
+const Dash = ({data,handlePromotion,handleDemotion,handleTeamCreation,handleSurveyTemplateSubmit,handleSurveyBuildSubmit,handleSubmitPost, handleNotificationData, handleGoalSubmit, handleSearch, handleCampaignDataSubmit}) =>{
     const [grid, setGrid] = useState(new Array(100).fill(null));
     const [secondSlide, setSecondSlide] = useState(false); 
 
@@ -144,7 +144,7 @@ const Dash = ({data,handleSurveyTemplateSubmit,handleSurveyBuildSubmit,handleSub
     const [surveySearchResults, setSurveyResults] = useState([]);
     const [resultPool, setResultPool] = useState([]); 
     const [surveySlideState, setSurveySlideState] = useState('create-survey'); 
-    const [thirdSlideSearchResults, setThirdSlideSearchResults] = useState([{}]); 
+    const [thirdSlideSearchResults, setThirdSlideSearchResults] = useState([]); 
     const [thirdSlideStyles, setThirdSlideStyles ] = useState({}); 
     const [isThirdCampaignSlide, setThirdCampaignSlide] = useState(false); 
     const [selectedCandidates, setSelectedCandidates] = useState([{name:'Result'}]); 
@@ -192,6 +192,9 @@ const Dash = ({data,handleSurveyTemplateSubmit,handleSurveyBuildSubmit,handleSub
    const [memberPoolSelections, setMemberPoolSelections] = useState([]); 
    const [isPermissions, setPermissions] = useState(true); 
    const [permissionsPool, setPermissionsPool] = useState([]); 
+   const [teamName, setTeamName] = useState({
+    teamName:''
+   })
 
     const [ref, inView] = useInView(); 
     const graph = useRef(); 
@@ -684,18 +687,18 @@ const Dash = ({data,handleSurveyTemplateSubmit,handleSurveyBuildSubmit,handleSub
        let id = parseInt(target.id.split('-')[1])
        const result = surveySearchResults[id]; 
 
-       let newPool = [{name:result.title}, ...resultPool]; 
+       let newPool = [{name:result.survey_title}, ...resultPool]; 
        
-       const isIncluded = resultPool.some((pod) => pod.name === result.title); 
+       const isIncluded = resultPool.some((pod) => pod.name === result.survey_title); 
        
        if(!isIncluded){
        setResultPool(newPool);
        setCampaignData((prev) =>{
         if(prev.survey_pool){
-            let copy = [...prev.survey_pool, {name:result.title}];
+            let copy = [...prev.survey_pool, {name:result.survey_title}];
             return {...campaignData, survey_pool:copy}
         } else {
-            return {...campaignData,survey_pool:[{name:result.title}]}
+            return {...campaignData,survey_pool:[{name:result.survey_title}]}
         }
        }) 
        }
@@ -1039,6 +1042,45 @@ const Dash = ({data,handleSurveyTemplateSubmit,handleSurveyBuildSubmit,handleSub
         }
 
     }
+
+    // Admin 
+
+    //Team Management 
+
+    function handleAddTeamMember(e){
+        let target = e.target; 
+        while(!target.className || target.className !== 'result-mt'){
+            target = target.parentNode
+        }
+        const id = parseInt(target.id.split('-')[1]); 
+        const selection = memberPool[id]
+        const {first_name, employee_id} = selection; 
+        
+        const isIncluded = memberPoolSelections.some((sel) => first_name === sel.first_name);
+        
+        if(!isIncluded){
+        setMemberPoolSelections([...memberPoolSelections,{first_name, employee_id}]); 
+        }
+    }
+
+    function handleRemoveTeamMember(e){
+        const selection = e.target.previousSibling.innerHTML; 
+
+        const findSelectionIndex = memberPoolSelections.findIndex((mem) => mem.first_name === selection); 
+         
+        let temp = [...memberPoolSelections].filter((_,i) => i !== findSelectionIndex); 
+        setMemberPoolSelections(temp); 
+    }
+
+    function handleTeamCreationData(e){
+        const name = e.target.name; 
+        const value = e.target.value; 
+
+        setTeamName((prev) =>({
+            ...prev,
+            [name]:value
+        }))
+    }
     return(
         <div className="dashboard-wrap">
             <div className="dash-a">
@@ -1342,7 +1384,7 @@ const Dash = ({data,handleSurveyTemplateSubmit,handleSurveyBuildSubmit,handleSub
                         <div className="results-fc">
                             {thirdSlideSearchResults.map((result,i) =>(
                                   <div className="candidates-fc"key={i}>
-                                     <h3>{result.first_name}</h3>
+                                     <h3>{result["first_name"]}</h3>
                                      <span>
                                         <img src={redx} alt="" className="remove-icon-fc" id={`red-${i}`} onClick={(e) => handleCandidateSelection(e,'remove')}/>
                                         <img src={checkbox} alt="" className="remove-icon-fc" id={`check-${i}`} onClick={(e) => handleCandidateSelection(e,'add')}/> 
@@ -1373,8 +1415,8 @@ const Dash = ({data,handleSurveyTemplateSubmit,handleSurveyBuildSubmit,handleSub
                             {surveySearchResults.map((result,i) =>(
                                 <div className="result-as" key={i} id={`result-${i}`}>
                                     <span>
-                                        <h3>{result.title}</h3>
-                                        <p>{result.id}</p>
+                                        <h3>{result.survey_title}</h3>
+                                        <p>{result.survey_ref}</p>
                                     </span>
                                     <div onClick={(e) => addSurveySelection(e)}>
                                         <div id="p1-as"></div>
@@ -1399,7 +1441,7 @@ const Dash = ({data,handleSurveyTemplateSubmit,handleSurveyBuildSubmit,handleSub
                         </div>
                         </div> : <div className="finish-campaign-right">
                             <h2>Almost Finished 😁</h2>
-                            {selectedCandidates.length && <div className="campaign-submit-btn"><button onClick={(e) => handleCampaignDataSubmit(e,campaignData)}>Finish</button></div>}
+                            {selectedCandidates.length && <div className="campaign-submit-btn"><button onClick={(e) => handleCampaignDataSubmit(e,{...campaignData,user_id:data.employee.employee_id})}>Finish</button></div>}
                             </div>}
                 </div>
             </div> :
@@ -1743,15 +1785,15 @@ const Dash = ({data,handleSurveyTemplateSubmit,handleSurveyBuildSubmit,handleSub
                            </span>
                         </div>
                         <div className="pool-pa">
-                            {permissionsPool.map((result) => (
-                                <div className="result-pa">
+                            {permissionsPool.map((result,i) => (
+                                <div className="result-pa" key={i} >
                                     <span>
                                     <h3>{result.first_name}</h3>
-                                    <p>{result.role === 1 ? "Admin" : result.role === 2 ? "Manager" : "Employee"}</p>
+                                    <p>{result._role === "1" ? "Admin" : result._role === "2" ? "Manager" : "Employee"}</p>
                                     </span>
                                     <div className="pool-permissions-pa">
-                                       <button id="promote-ppp">Promote</button>
-                                       <button id="demote-ppp">Demote</button>
+                                       <button id="promote-ppp" onClick={(e) => handlePromotion(e)}>Promote</button>
+                                       <button id="demote-ppp" onClick={(e) => handleDemotion(e)}>Demote</button>
                                     </div>
                                 </div>
                             ))}
@@ -1761,7 +1803,7 @@ const Dash = ({data,handleSurveyTemplateSubmit,handleSurveyBuildSubmit,handleSub
                 <div className="manage-teams">
                    <span>
                    <h2>Create Team</h2>
-                   <input type="text" placeholder="Enter Team Name" id="team-name" name="teamName"/> 
+                   <input type="text" placeholder="Enter Team Name" id="team-name" name="teamName" onChange={(e) => handleTeamCreationData(e)}/> 
                    </span>
                    <div className="search-mt">
                    <span id="pool-mt-header">
@@ -1769,10 +1811,10 @@ const Dash = ({data,handleSurveyTemplateSubmit,handleSurveyBuildSubmit,handleSub
                             <input type="text" placeholder="Enter" name="search" onChange={(e) => handleSearch(e,'/admin/search',setMemberPool,memberPool)}/> 
                         </span>
                        <div className="pool-mt">
-                        {memberPool.map((member) =>(
-                            <div className="result-mt">
+                        {memberPool.map((member,i) =>(
+                            <div className="result-mt" key={i} id={`rm-${i}`}>
                                <h3>{member.first_name}</h3> 
-                               <div className="add-btn-mt"><button>Add</button></div>   
+                               <div className="add-btn-mt"><button onClick={(e) => handleAddTeamMember(e)}>Add</button></div>   
                             </div>
                         ))}
                         </div> 
@@ -1781,11 +1823,11 @@ const Dash = ({data,handleSurveyTemplateSubmit,handleSurveyBuildSubmit,handleSub
                                 {memberPoolSelections.map((member) => (
                                     <div>
                                         <p>{member.first_name}</p>
-                                        <img src={x} alt="" id="close-selection"/>
+                                        <img src={x} alt="" id="close-selection" onClick={(e) => handleRemoveTeamMember(e)}/>
                                     </div>
                                 ))}
                             </div>
-                            {memberPoolSelections.length && <div className="spa-btn"><button>Submit</button></div>}
+                            {memberPoolSelections.length && <div className="spa-btn"><button onClick={(e) => handleTeamCreation(e,teamName,memberPoolSelections)}>Create Team</button></div>}
                         </div>
                     </div>    
                 </div>}

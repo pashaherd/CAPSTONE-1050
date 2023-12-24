@@ -1,0 +1,374 @@
+@media screen and (max-width:1200px){
+   
+    .showcase-header{
+        padding-left:1em; 
+    }
+    .showcase-header h1{
+        font-size:5.5em; 
+    }
+
+    .R{
+        font-size:.2em; 
+    }
+}
+
+@media screen and (max-width:1000px){
+    .showcase-header h1{
+        font-size:4em; 
+    }
+    .R{
+        font-size:.25em; 
+    }
+      /* News */ 
+      .news-section h1{
+        font-size:2em;
+        margin:0;  
+    }
+    /* Dash */ 
+
+    /*Templates*/
+    .temp-card h2{
+        font-size:.75em; 
+    }
+    /* Admin */ 
+    #perm1, #perm2{
+        max-width:100%; 
+    }
+    #perm1 h2, #perm2 h2{
+       font-size:.75em; 
+    }
+
+      /* Guidelines */ 
+
+      .tab-i h1{
+        font-size:2em; 
+    }
+
+    .info{
+        padding:1em; 
+    }
+    .card-i{
+        width:30%; 
+    }
+    .card-i p{
+        font-size:.75em; 
+    }
+    
+    /* Feed */ 
+    .feed-header h1{
+        font-size:1.75em; 
+    }
+
+}
+
+
+@media screen and (max-width:800px){
+    /* Login */ 
+    .login-signup{
+        width:60%; 
+    }
+    .login h1{
+        font-size:1.5em; 
+    }
+
+    /* ShowCase */ 
+    .showcase-header{
+        padding:.5em; 
+        padding-left:0em; 
+    }
+    .showcase-header h1{
+        font-size:3.5em; 
+    }
+    .R{
+        transform:scale(1.5); 
+    }
+    .task{
+        transform:scale(.9); 
+    }
+    /* Dash */ 
+
+    .default-dash h1{
+        font-size:1.5em; 
+    }
+    .default-dash button{
+        margin-left:1em; 
+    }
+    
+    .dash-a h1{
+        font-size:2.5em; 
+    }
+
+    .static{
+        transform:scale(.65) translate(-1em,-1em); 
+    }
+    .dashboard-wrap{
+        padding:1.5em; 
+    }
+    .team-stats{
+        max-width:100%; 
+        grid-template-columns:10% 90%; 
+    }
+
+    .static-team span h2{
+        font-size:.5em; 
+    }
+    .team-icon{
+        max-width:1em; 
+        max-height:1em; 
+    }
+    .dynamic-team{
+        padding:.25em; 
+    }
+    .dynamic-team div{
+        width:fit-content; 
+    }
+    .dynamic-team h2{
+        font-size:.75em; 
+    }
+    /* Goals */ 
+    .assign-goal-header h2{
+        font-size:.75em; 
+    }
+    .inputs-ag-pill{
+        width:10em; 
+    }
+    /* Surveys */
+    .tt-wrap-cs p{
+        font-size:.5em; 
+    }
+
+    .multiple-choice-eq input{
+       max-width:25%; 
+       padding:.25em; 
+    }
+
+    .likert-eq p{
+        font-size:.5em; 
+    }
+
+    .components-cs h3{
+       font-size:.75em; 
+    }
+     
+    /* Campaigns */ 
+    .create-survey-wrap h1{
+        font-size:1em; 
+    }
+    .campaign-cover h2, .survey-cover h2{
+        font-size:.9em; 
+    }
+    .sc-input-cover h2{
+        font-size:1.5em; 
+    }
+    .result-as span h3{
+        font-size:.75em; 
+    }
+    .result-as span p{
+        font-size:.5em; 
+    }
+    .result-section h3{
+        font-size:.75em; 
+    }
+    .result-pool p{
+        font-size:.25em; 
+    }
+    .candidates-fc h3{
+      font-size:.75em; 
+    }
+    .finish-campaign-right h2{
+       font-size:.75em; 
+    }
+    /* Template */ 
+    .loaded-temp{
+        width:80%;
+        padding:.75em; 
+    }
+
+    .likert-ltq span p{
+        font-size:.5em; 
+    }
+    .mc-ltq span input{
+        max-width:20%; 
+    }
+    #desc-fltq textarea{
+        max-width:100%; 
+    }
+    /* News */ 
+    .news-section h1{
+        font-size:1.75em;
+        margin:0;  
+    }
+    /* Guidelines */ 
+
+    .tab-i h1{
+        font-size:2em; 
+    }
+
+    .info{
+        padding:1em; 
+    }
+    .card-i{
+        width:30%; 
+    }
+    .card-i p{
+        font-size:.65em; 
+    }
+
+    /* Feed */ 
+    .feed-header h1{
+        font-size:1.75em; 
+    }
+    .feed-card h1{
+        font-size:1em; 
+    }
+
+    /* Surveys */ 
+    .header-survey h1{
+        font-size:2em; 
+    }
+
+    .header-notification span p{
+        font-size:.75em; 
+    }
+
+    .surveys-incompleted-clear h1{
+        font-size:1.5em; 
+    }
+
+    .incompleted-tab p{
+        font-size:.5em; 
+    }
+}
+
+
+@media screen and (max-width:500px){
+    /* NAv */ 
+    .login-signup{
+        width:80%; 
+    }
+
+    /* Showcase */ 
+    .showcase-body{
+        grid-template-columns:100%; 
+        grid-template-rows:35% 65%; 
+    }
+    .showcase-header{
+        grid-column:1; 
+        grid-row:1; 
+        padding:1.25em; 
+        align-items:center; 
+        justify-self:center;
+    }
+    .showcase-header::before{
+        display:none; 
+    }
+    .header-options{
+        align-self:center; 
+        transform:scale(.9);
+        grid-template-rows:15% 85%;  
+    }
+    .showcase-header h1{
+        font-size:3em; 
+    }
+    .R{
+        transform:scale(1.5); 
+    }
+
+    /* News */ 
+    .news-section h1{
+        font-size:1.25em;
+        margin:0;  
+    }
+
+    /* Guidelines */
+    .tab-i h1{
+      font-size:1.5em; 
+    } 
+    .card-i::before{
+        transform:scale(.65); 
+    }
+
+    /* Feed */ 
+    .feed-header h1{
+        font-size:1.25em; 
+    }
+
+    /* Surveys */ 
+    .header-survey h1{
+        font-size:1.75em; 
+    }
+    .header-notification span p{
+        font-size:.5em; 
+    }
+    .incompleted-tab p{
+        font-size:.25em; 
+    }
+}
+
+@media screen and (max-width:400px){
+    /* Nav */ 
+    nav header ul li{
+    transform:scale(.75); 
+    }
+
+    .sign-up-header h1{
+        font-size:1.25em; 
+    }
+
+    .sign-up-header p{
+        font-size:.85em; 
+    }
+    
+    .login-header h1{
+        font-size:1em; 
+    }
+    .login-header p{
+        font-size:.75em; 
+    }
+    /* Showcase */ 
+    
+     /* News */ 
+     .news-section h1{
+        font-size:.85em;
+        margin:0;  
+    }
+
+      /* Guidelines */
+      .tab-i h1{
+        font-size:1em; 
+      } 
+      .card-i::before{
+        display:none; 
+          transform:scale(.65); 
+      }
+
+      .card-i p {
+        font-size:.5em; 
+      }
+      .card-i h3{
+        font-size:.85em; 
+      }
+        /* Feed */ 
+    .feed-header h1{
+        font-size:.85em; 
+    }
+
+    /* Surveys */ 
+    .header-survey h1{
+        font-size:1.5em; 
+    }
+    .header-notification span p{
+        font-size:.5em; 
+    }
+    .incompleted-tab p{
+        font-size:.25em; 
+    }
+   
+    /* Footer */ 
+    .footer-links a{
+        width:fit-content; 
+        font-size:.75em; 
+        transform:scale(.5); 
+    }
+
+}

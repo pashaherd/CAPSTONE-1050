@@ -533,7 +533,7 @@ transition:all 10s ease-in;
 .showcase-header{
   grid-column:2;
   width:100%; 
-  height:100%; 
+  height:100%;  
   display:flex;
   flex-direction:column; 
   align-items:start;
@@ -4091,6 +4091,7 @@ transition:all 10s ease-in;
   display:grid; 
   grid-template-columns:repeat(auto-fill,33%); 
   grid-template-rows:repeat(auto-fill,50%); 
+  gap:.5em; 
 }
 
 .result-mt{
@@ -4101,6 +4102,7 @@ transition:all 10s ease-in;
   display:flex; 
   align-items:center; 
   justify-content:center; 
+  flex-direction:column; 
   gap:.25em; 
 }
 
@@ -4151,13 +4153,17 @@ transition:all 10s ease-in;
 }
 
 .spa div{
+  align-self:center; 
+  justify-self:center; 
   display:flex; 
-  width:100%; 
-  height:100%; 
+  width:80%; 
+  height:80%; 
   background-color:var(--primary-base-shade3); 
   border-radius:.25em; 
   align-items:center; 
   justify-content:center; 
+  gap:1em; 
+  border-radius:.25em; 
 }
 
 .spa div p{
@@ -4169,6 +4175,36 @@ transition:all 10s ease-in;
   width:.75em; 
   height:.75em; 
   cursor:pointer; 
+  filter:invert(100); 
+}
+
+.spa-btn{
+  width:25%; 
+  height:2em; 
+  background-color:var(--primary-base); 
+  display:grid; 
+  place-items:center; 
+  cursor:pointer; 
+  border-radius:.25em; 
+  transform:scale(1); 
+  align-self:center;
+  justify-self:center; 
+  transition:all .1s ease-in;  
+}
+
+.spa-btn:active{
+  transform:scale(.9); 
+  transition:all .1s ease-in; 
+}
+
+.spa-btn button{
+  background:transparent; 
+  border:none; 
+  font-family:var(--poppins); 
+  font-weight:800; 
+  cursor:pointer; 
+  color:aquamarine; 
+  font-size:.5em; 
 }
 /* News Section */ 
 
@@ -4812,6 +4848,36 @@ transform:translateX(450%);
   align-items:center; 
   justify-content:center; 
   gap:.5em; 
+}
+.noti{
+  width:100%; 
+  height:fit-content; 
+  text-align:center;
+  font-family:var(--poppins); 
+}
+@keyframes noti{
+  0%{ 
+    transform:translateY(1em); 
+    opacity:0; 
+  }
+  10%{
+    transform:translateY(0); 
+    opacity:1; 
+  }
+  50%{
+    transform:translateY(0); 
+    opacity:1;
+  }
+  75%{
+   
+  }
+  80%{
+    
+  }
+  100%{
+    opacity:0; 
+    transform:translateY(1em); 
+  }
 }
 .header-icon{
   max-width:1em; 

@@ -25,8 +25,7 @@ const Footer = () =>{
             </div>
         <div className="footer-logo"><p>logo</p></div>
         <ul className="footer-links">
-           {!isAboutPage && <li><a href="/about">About This Project</a></li>}
-           {isAboutPage && <li><a href="/">Return</a></li>}
+           {isAboutPage && <li><a href="/capstone">Return</a></li>}
         </ul>
         </footer>
     )
